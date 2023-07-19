@@ -1,0 +1,52 @@
+name: immolate
+version: 0.1.0.0
+synopsis: Clear to write, read and edit DSL for HTML
+description: |
+  Clear to write, read and edit DSL for HTML.
+  .
+  * Names are consistent, and do not conflict with base or are keywords (all have suffix @_@)
+  .
+  * Same combinator can be used for attributes and elements (e.g. 'style_')
+  .
+  See the "Immolate" module for more documentation.
+
+homepage: https://github.com/intolerable/immolate
+license: BSD3
+license-file: LICENSE
+author: Fraser Murray
+maintainer: fraser.m.murray@gmail.com
+copyright: 2023 Fraser Murray
+
+language: Haskell2010
+
+extra-source-files:
+  - CHANGELOG.md
+  - README.md
+
+ghc-options: -Wall -Wextra
+
+default-extensions: []
+
+dependencies:
+  - base >= 4.8 && < 4.19
+  - bytestring >= 0.10.12.0
+  - containers >= 0.6.5.1
+  - mtl >= 2.2.2
+  - text >= 1.2.4.1
+  - transformers >= 0.5.6.2
+
+library:
+  source-dirs: src
+  other-modules:
+    - Blaze.ByteString.Builder.Char.Utf8
+    - Blaze.ByteString.Builder.Html.Utf8
+    - Blaze.ByteString.Builder.Html.Word
+
+tests:
+  immolate-spec:
+    source-dirs: test
+    main: Main.hs
+    dependencies:
+      - immolate
+      - hspec
+      - HUnit
