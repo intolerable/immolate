@@ -1,0 +1,8 @@
+packages:
+  ./immolate
+
+test-options:
+  "--color"
+  "--diff"
+  "--format=specdoc"
+test-show-details: streaming
