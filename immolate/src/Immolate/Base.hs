@@ -12,7 +12,7 @@ module Immolate.Base
   ,evalHtmlT
   ,runHtmlT
   ,generalizeHtmlT
-  ,commuteHtmlT2
+  ,commuteHtmlT
   ,hoistHtmlT
   -- * Combinators
   ,makeElement
@@ -27,10 +27,6 @@ module Immolate.Base
   ,Term(..)
   ,TermRaw(..)
   ,ToHtml(..)
-
-   -- * Deprecated
-  ,relaxHtmlT
-  ,commuteHtmlT
   )
   where
 
@@ -327,10 +323,10 @@ generalizeHtmlT = hoistHtmlT go
 -- exampleHtml' = evalState (commuteHtmlT exampleHtml) 1
 -- @
 --
-commuteHtmlT2 :: (Monad m, Monad n)
+commuteHtmlT :: (Monad m, Monad n)
              => HtmlT m a      -- ^ unpurely generated HTML
              -> m (HtmlT n a)  -- ^ Commuted monads. /Note:/ @n@ can be 'Identity'
-commuteHtmlT2 h = do
+commuteHtmlT h = do
   (builder, a) <- runHtmlT h
   return . HtmlT $ modify' (<> builder) >> return a
 
@@ -436,18 +432,3 @@ write b = HtmlT (modify' (<> b))
 
 attributeList :: [Attributes] -> Seq Attribute
 attributeList = foldMap unAttributes
-
---------------------------------------------------------------------------------
--- Deprecated definitions
-
-relaxHtmlT :: Monad m => HtmlT Identity a -> HtmlT m a
-relaxHtmlT = undefined
-{-# DEPRECATED relaxHtmlT "DO NOT USE. This was exported accidentally and throws an exception." #-}
-
-commuteHtmlT :: (Monad m, Monad n)
-             => HtmlT m a      -- ^ unpurely generated HTML
-             -> m (HtmlT n a)  -- ^ Commuted monads. /Note:/ @n@ can be 'Identity'
-commuteHtmlT h = do
-  (builder, a) <- runHtmlT h
-  return . HtmlT $ put builder >> return a
-{-# DEPRECATED commuteHtmlT "This has incorrect behavior and will lose HTML output. See commuteHtmlT2." #-}

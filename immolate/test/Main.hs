@@ -161,6 +161,6 @@ testCommute = do
   it "commutes" $ do
     let stateAction :: HtmlT (Control.Monad.State.Strict.State [Integer]) ()
         stateAction = div_ [class_ "inside"] $ pure ()
-        (fragment, _s) = runState (commuteHtmlT2 stateAction) [0]
+        (fragment, _s) = runState (commuteHtmlT stateAction) [0]
     renderText (div_ [class_ "outside"] fragment) `shouldBe`
      "<div class=\"outside\"><div class=\"inside\"></div></div>"
