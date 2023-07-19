@@ -1,7 +1,4 @@
-lucid2
-=====
-
-**Note**: For a list of changes from lucid1 to lucid2, see [CHANGELOG.md](https://github.com/chrisdone/lucid/blob/master/lucid2/CHANGELOG.md)
+# immolate
 
 Clear to write, read and edit DSL for writing HTML
 
@@ -12,21 +9,14 @@ Clear to write, read and edit DSL for writing HTML
 - [Good to know](#good-to-know)
 - [Transforming](#transforming)
 
-## Version
-
-This is version 2 of the lucid package, according to the
-[Immutable Publishing Policy](https://chrisdone.com/posts/ipp/).
-
-There never be any breaking changes made to this package.
-
 ## Introduction
 
-HTML terms in Lucid are written with a postfix ‘`_`’ to indicate data
+HTML terms in Immolate are written with a postfix ‘`_`’ to indicate data
 rather than code. Some examples:
 
 `p_`, `class_`, `table_`, `style_`
 
-See `Lucid.Html5` for a complete list of Html5 combinators.
+See `Immolate.Html5` for a complete list of Html5 combinators.
 
 Plain text is written using the `OverloadedStrings` and
 `ExtendedDefaultRules` extensions, and is automatically escaped:
@@ -72,14 +62,14 @@ Or monadic sequencing:
 Attributes are set by providing an argument list:
 
 ``` haskell
-λ> p_ [class_ "brand"] "Lucid Inc" :: Html ()
+λ> p_ [class_ "brand"] "Immolate Inc" :: Html ()
 ```
 
 ``` html
-<p class="brand">Lucid Inc</p>
+<p class="brand">Immolate Inc</p>
 ```
 
-Here is a fuller example of Lucid:
+Here is a fuller example of Immolate:
 
 ``` haskell
 table_ [rows_ "2"]
@@ -129,7 +119,7 @@ can run the monad directly via `execHtml` and use the more low-level
 blaze `Builder`, which has a plethora of output modes in
 Blaze.ByteString.Builder.
 
-See the documentation for the `Lucid` module for information about
+See the documentation for the `Immolate` module for information about
 using it as a monad transformer.
 
 ## Good to know

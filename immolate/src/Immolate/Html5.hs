@@ -4,12 +4,12 @@
 
 -- | Html5 terms.
 
-module Lucid.Html5 where
+module Immolate.Html5 where
 
-import           Lucid.Base
+import Immolate.Base
 
-import           Data.Monoid
-import           Data.Text (Text, unwords)
+import Data.ByteString
+import Data.Text (Text)
 
 -------------------------------------------------------------------------------
 -- Elements
@@ -17,13 +17,13 @@ import           Data.Text (Text, unwords)
 -- | @DOCTYPE@ element
 --
 -- This is implemented as "raw output", because the doctype doesn't
--- accept attributes, such as those inserted via 'with'.
+-- accept attributes.
 --
-doctype_ :: Applicative m => HtmlT m ()
-doctype_ = HtmlT (pure (const "<!DOCTYPE HTML>", ()))
+doctype_ :: Monad m => HtmlT m ()
+doctype_ = toHtmlRaw ("<!DOCTYPE HTML>" :: ByteString)
 
 -- | @DOCTYPE@ element + @html@ element
-doctypehtml_ :: Applicative m => HtmlT m a -> HtmlT m a
+doctypehtml_ :: Monad m => HtmlT m a -> HtmlT m a
 doctypehtml_ m = doctype_ *> html_ m
 
 -- | @a@ element
@@ -39,8 +39,8 @@ address_ :: Term arg result => arg -> result
 address_ = term "address"
 
 -- | @area@ element
-area_ :: Applicative m => [Attribute] -> HtmlT m ()
-area_ = with (makeElementNoEnd "area")
+area_ :: Monad m => [Attributes] -> HtmlT m ()
+area_ = makeElementNoEnd "area"
 
 -- | @article@ element
 article_ :: Term arg result => arg -> result
@@ -59,8 +59,8 @@ b_ :: Term arg result => arg -> result
 b_ = term "b"
 
 -- | @base@ element
-base_ :: Applicative m => [Attribute] -> HtmlT m ()
-base_ = with (makeElementNoEnd "base")
+base_ :: Monad m => [Attributes] -> HtmlT m ()
+base_ = makeElementNoEnd "base"
 
 -- | @bdo@ element
 bdo_ :: Term arg result => arg -> result
@@ -75,8 +75,8 @@ body_ :: Term arg result => arg -> result
 body_ = term "body"
 
 -- | @br@ element
-br_ :: Applicative m => [Attribute] -> HtmlT m ()
-br_ = with (makeElementNoEnd "br")
+br_ :: Monad m => [Attributes] -> HtmlT m ()
+br_ = makeElementNoEnd "br"
 
 -- | @button@ element
 button_ :: Term arg result => arg -> result
@@ -99,8 +99,8 @@ code_ :: Term arg result => arg -> result
 code_ = term "code"
 
 -- | @col@ element
-col_ :: Applicative m => [Attribute] -> HtmlT m ()
-col_ = with (makeElementNoEnd "col")
+col_ :: Monad m => [Attributes] -> HtmlT m ()
+col_ = makeElementNoEnd "col"
 
 -- | @colgroup@ element
 colgroup_ :: Term arg result => arg -> result
@@ -147,8 +147,8 @@ em_ :: Term arg result => arg -> result
 em_ = term "em"
 
 -- | @embed@ element
-embed_ :: Applicative m => [Attribute] -> HtmlT m ()
-embed_ = with (makeElementNoEnd "embed")
+embed_ :: Monad m => [Attributes] -> HtmlT m ()
+embed_ = makeElementNoEnd "embed"
 
 -- | @fieldset@ element
 fieldset_ :: Term arg result => arg -> result
@@ -207,8 +207,8 @@ hgroup_ :: Term arg result => arg -> result
 hgroup_ = term "hgroup"
 
 -- | @hr@ element
-hr_ :: Applicative m => [Attribute] -> HtmlT m ()
-hr_ = with (makeElementNoEnd "hr")
+hr_ :: Monad m => [Attributes] -> HtmlT m ()
+hr_ = makeElementNoEnd "hr"
 
 -- | @html@ element
 html_ :: Term arg result => arg -> result
@@ -223,12 +223,12 @@ iframe_ :: Term arg result => arg -> result
 iframe_ = term "iframe"
 
 -- | @img@ element
-img_ :: Applicative m => [Attribute] -> HtmlT m ()
-img_ = with (makeElementNoEnd "img")
+img_ :: Monad m => [Attributes] -> HtmlT m ()
+img_ = makeElementNoEnd "img"
 
 -- | @input@ element
-input_ :: Applicative m => [Attribute] -> HtmlT m ()
-input_ = with (makeElementNoEnd "input")
+input_ :: Monad m => [Attributes] -> HtmlT m ()
+input_ = makeElementNoEnd "input"
 
 -- | @ins@ element
 ins_ :: Term arg result => arg -> result
@@ -239,8 +239,8 @@ kbd_ :: Term arg result => arg -> result
 kbd_ = term "kbd"
 
 -- | @keygen@ element
-keygen_ :: Applicative m => [Attribute] -> HtmlT m ()
-keygen_ = with (makeElementNoEnd "keygen")
+keygen_ :: Monad m => [Attributes] -> HtmlT m ()
+keygen_ = makeElementNoEnd "keygen"
 
 -- | @label@ element or @label@ attribute
 label_ :: Term arg result => arg -> result
@@ -255,8 +255,8 @@ li_ :: Term arg result => arg -> result
 li_ = term "li"
 
 -- | @link@ element
-link_ :: Applicative m => [Attribute] -> HtmlT m ()
-link_ = with (makeElementNoEnd "link")
+link_ :: Monad m => [Attributes] -> HtmlT m ()
+link_ = makeElementNoEnd "link"
 
 -- | @map@ element
 map_ :: Term arg result => arg -> result
@@ -275,12 +275,12 @@ menu_ :: Term arg result => arg -> result
 menu_ = term "menu"
 
 -- | @menuitem@ element
-menuitem_ :: Applicative m => [Attribute] -> HtmlT m ()
-menuitem_ = with (makeElementNoEnd "menuitem")
+menuitem_ :: Monad m => [Attributes] -> HtmlT m ()
+menuitem_ = makeElementNoEnd "menuitem"
 
 -- | @meta@ element
-meta_ :: Applicative m => [Attribute] -> HtmlT m ()
-meta_ = with (makeElementNoEnd "meta")
+meta_ :: Monad m => [Attributes] -> HtmlT m ()
+meta_ = makeElementNoEnd "meta"
 
 -- | @meter@ element
 meter_ :: Term arg result => arg -> result
@@ -319,8 +319,8 @@ p_ :: Term arg result => arg -> result
 p_ = term "p"
 
 -- | @param@ element
-param_ :: Applicative m => [Attribute] -> HtmlT m ()
-param_ = with (makeElementNoEnd "param")
+param_ :: Monad m => [Attributes] -> HtmlT m ()
+param_ = makeElementNoEnd "param"
 
 -- | The @svg@ attribute.
 svg_ :: Term arg result => arg -> result
@@ -371,8 +371,8 @@ small_ :: Term arg result => arg -> result
 small_ = term "small"
 
 -- | @source@ element
-source_ :: Applicative m => [Attribute] -> HtmlT m ()
-source_ = with (makeElementNoEnd "source")
+source_ :: Monad m => [Attributes] -> HtmlT m ()
+source_ = makeElementNoEnd "source"
 
 -- | @span@ element or @span@ attribute
 span_ :: Term arg result => arg -> result
@@ -443,8 +443,8 @@ tr_ :: Term arg result => arg -> result
 tr_ = term "tr"
 
 -- | @track@ element
-track_ :: Applicative m => [Attribute] -> HtmlT m ()
-track_ = with (makeElementNoEnd "track")
+track_ :: Monad m => [Attributes] -> HtmlT m ()
+track_ = makeElementNoEnd "track"
 
 -- | @ul@ element
 ul_ :: Term arg result => arg -> result
@@ -459,682 +459,676 @@ video_ :: Term arg result => arg -> result
 video_ = term "video"
 
 -- | @wbr@ element
-wbr_ :: Applicative m => [Attribute] -> HtmlT m ()
-wbr_ = with (makeElementNoEnd "wbr")
+wbr_ :: Monad m => [Attributes] -> HtmlT m ()
+wbr_ = makeElementNoEnd "wbr"
 
 -------------------------------------------------------------------------------
 -- Attributes
 
 -- | The @accept@ attribute.
-accept_ :: Text -> Attribute
-accept_ = makeAttribute "accept"
+accept_ :: Text -> Attributes
+accept_ = makeAttributes "accept"
 
 -- | The @acceptCharset@ attribute.
-acceptCharset_ :: Text -> Attribute
-acceptCharset_ = makeAttribute "accept-charset"
+acceptCharset_ :: Text -> Attributes
+acceptCharset_ = makeAttributes "accept-charset"
 
 -- | The @accesskey@ attribute.
-accesskey_ :: Text -> Attribute
-accesskey_ = makeAttribute "accesskey"
+accesskey_ :: Text -> Attributes
+accesskey_ = makeAttributes "accesskey"
 
 -- | The @action@ attribute.
-action_ :: Text -> Attribute
-action_ = makeAttribute "action"
+action_ :: Text -> Attributes
+action_ = makeAttributes "action"
 
 -- | The @alt@ attribute.
-alt_ :: Text -> Attribute
-alt_ = makeAttribute "alt"
+alt_ :: Text -> Attributes
+alt_ = makeAttributes "alt"
 
 -- | The @async@ attribute.
-async_ :: Text -> Attribute
-async_ = makeAttribute "async"
+async_ :: Text -> Attributes
+async_ = makeAttributes "async"
 
 -- | The @autocomplete@ attribute.
-autocomplete_ :: Text -> Attribute
-autocomplete_ = makeAttribute "autocomplete"
+autocomplete_ :: Text -> Attributes
+autocomplete_ = makeAttributes "autocomplete"
 
 -- | The @autofocus@ attribute.
-autofocus_ :: Attribute
-autofocus_ = makeAttribute "autofocus" mempty
+autofocus_ :: Attributes
+autofocus_ = makeAttributes "autofocus" mempty
 
 -- | The @autoplay@ attribute.
-autoplay_ :: Text -> Attribute
-autoplay_ = makeAttribute "autoplay"
+autoplay_ :: Text -> Attributes
+autoplay_ = makeAttributes "autoplay"
 
 -- | The @challenge@ attribute.
-challenge_ :: Text -> Attribute
-challenge_ = makeAttribute "challenge"
+challenge_ :: Text -> Attributes
+challenge_ = makeAttributes "challenge"
 
 -- | The @charset@ attribute.
-charset_ :: Text -> Attribute
-charset_ = makeAttribute "charset"
+charset_ :: Text -> Attributes
+charset_ = makeAttributes "charset"
 
 -- | The @checked@ attribute.
-checked_ :: Attribute
-checked_ = makeAttribute "checked" mempty
+checked_ :: Attributes
+checked_ = makeAttributes "checked" mempty
 
 -- | The @class@ attribute.
-class_ :: Text -> Attribute
-class_ = makeAttribute "class"
-
--- | Smart constructor for @class@ attribute.
---
--- @since 2.9.8
-classes_ :: [Text] -> Attribute
-classes_ = makeAttribute "class" . Data.Text.unwords
+class_ :: Text -> Attributes
+class_ = makeAttributes "class"
 
 -- | The @cols@ attribute.
-cols_ :: Text -> Attribute
-cols_ = makeAttribute "cols"
+cols_ :: Text -> Attributes
+cols_ = makeAttributes "cols"
 
 -- | The @colspan@ attribute.
-colspan_ :: Text -> Attribute
-colspan_ = makeAttribute "colspan"
+colspan_ :: Text -> Attributes
+colspan_ = makeAttributes "colspan"
 
 -- | The @content@ attribute.
-content_ :: Text -> Attribute
-content_ = makeAttribute "content"
+content_ :: Text -> Attributes
+content_ = makeAttributes "content"
 
 -- | The @contenteditable@ attribute.
-contenteditable_ :: Text -> Attribute
-contenteditable_ = makeAttribute "contenteditable"
+contenteditable_ :: Text -> Attributes
+contenteditable_ = makeAttributes "contenteditable"
 
 -- | The @contextmenu@ attribute.
-contextmenu_ :: Text -> Attribute
-contextmenu_ = makeAttribute "contextmenu"
+contextmenu_ :: Text -> Attributes
+contextmenu_ = makeAttributes "contextmenu"
 
 -- | The @controls@ attribute.
-controls_ :: Text -> Attribute
-controls_ = makeAttribute "controls"
+controls_ :: Text -> Attributes
+controls_ = makeAttributes "controls"
 
 -- | The @coords@ attribute.
-coords_ :: Text -> Attribute
-coords_ = makeAttribute "coords"
+coords_ :: Text -> Attributes
+coords_ = makeAttributes "coords"
 
 -- | The @crossorigin@ attribute.
 --
 -- @since 2.9.8
-crossorigin_ :: Text -> Attribute
-crossorigin_ = makeAttribute "crossorigin"
+crossorigin_ :: Text -> Attributes
+crossorigin_ = makeAttributes "crossorigin"
 
 -- | The @data@ attribute.
-data_ :: Text -> Text -> Attribute
-data_ name = makeAttribute ("data-" <> name)
+data_ :: Text -> Text -> Attributes
+data_ name = makeAttributes ("data-" <> name)
 
 -- | The @datetime@ attribute.
-datetime_ :: Text -> Attribute
-datetime_ = makeAttribute "datetime"
+datetime_ :: Text -> Attributes
+datetime_ = makeAttributes "datetime"
 
 -- | The @defer@ attribute.
-defer_ :: Text -> Attribute
-defer_ = makeAttribute "defer"
+defer_ :: Text -> Attributes
+defer_ = makeAttributes "defer"
 
 -- | The @dir@ attribute.
-dir_ :: Text -> Attribute
-dir_ = makeAttribute "dir"
+dir_ :: Text -> Attributes
+dir_ = makeAttributes "dir"
 
 -- | The @disabled@ attribute.
-disabled_ :: Text -> Attribute
-disabled_ = makeAttribute "disabled"
+disabled_ :: Text -> Attributes
+disabled_ = makeAttributes "disabled"
 
 -- | The @download@ attribute.
-download_ :: Text -> Attribute
-download_ = makeAttribute "download"
+download_ :: Text -> Attributes
+download_ = makeAttributes "download"
 
 -- | The @draggable@ attribute.
-draggable_ :: Text -> Attribute
-draggable_ = makeAttribute "draggable"
+draggable_ :: Text -> Attributes
+draggable_ = makeAttributes "draggable"
 
 -- | The @enctype@ attribute.
-enctype_ :: Text -> Attribute
-enctype_ = makeAttribute "enctype"
+enctype_ :: Text -> Attributes
+enctype_ = makeAttributes "enctype"
 
 -- | The @for@ attribute.
-for_ :: Text -> Attribute
-for_ = makeAttribute "for"
+for_ :: Text -> Attributes
+for_ = makeAttributes "for"
 
 -- | The @formaction@ attribute.
-formaction_ :: Text -> Attribute
-formaction_ = makeAttribute "formaction"
+formaction_ :: Text -> Attributes
+formaction_ = makeAttributes "formaction"
 
 -- | The @formenctype@ attribute.
-formenctype_ :: Text -> Attribute
-formenctype_ = makeAttribute "formenctype"
+formenctype_ :: Text -> Attributes
+formenctype_ = makeAttributes "formenctype"
 
 -- | The @formmethod@ attribute.
-formmethod_ :: Text -> Attribute
-formmethod_ = makeAttribute "formmethod"
+formmethod_ :: Text -> Attributes
+formmethod_ = makeAttributes "formmethod"
 
 -- | The @formnovalidate@ attribute.
-formnovalidate_ :: Text -> Attribute
-formnovalidate_ = makeAttribute "formnovalidate"
+formnovalidate_ :: Text -> Attributes
+formnovalidate_ = makeAttributes "formnovalidate"
 
 -- | The @formtarget@ attribute.
-formtarget_ :: Text -> Attribute
-formtarget_ = makeAttribute "formtarget"
+formtarget_ :: Text -> Attributes
+formtarget_ = makeAttributes "formtarget"
 
 -- | The @headers@ attribute.
-headers_ :: Text -> Attribute
-headers_ = makeAttribute "headers"
+headers_ :: Text -> Attributes
+headers_ = makeAttributes "headers"
 
 -- | The @height@ attribute.
-height_ :: Text -> Attribute
-height_ = makeAttribute "height"
+height_ :: Text -> Attributes
+height_ = makeAttributes "height"
 
 -- | The @hidden@ attribute.
-hidden_ :: Text -> Attribute
-hidden_ = makeAttribute "hidden"
+hidden_ :: Text -> Attributes
+hidden_ = makeAttributes "hidden"
 
 -- | The @high@ attribute.
-high_ :: Text -> Attribute
-high_ = makeAttribute "high"
+high_ :: Text -> Attributes
+high_ = makeAttributes "high"
 
 -- | The @href@ attribute.
-href_ :: Text -> Attribute
-href_ = makeAttribute "href"
+href_ :: Text -> Attributes
+href_ = makeAttributes "href"
 
 -- | The @hreflang@ attribute.
-hreflang_ :: Text -> Attribute
-hreflang_ = makeAttribute "hreflang"
+hreflang_ :: Text -> Attributes
+hreflang_ = makeAttributes "hreflang"
 
 -- | The @httpEquiv@ attribute.
-httpEquiv_ :: Text -> Attribute
-httpEquiv_ = makeAttribute "http-equiv"
+httpEquiv_ :: Text -> Attributes
+httpEquiv_ = makeAttributes "http-equiv"
 
 -- | The @icon@ attribute.
-icon_ :: Text -> Attribute
-icon_ = makeAttribute "icon"
+icon_ :: Text -> Attributes
+icon_ = makeAttributes "icon"
 
 -- | The @id@ attribute.
-id_ :: Text -> Attribute
-id_ = makeAttribute "id"
+id_ :: Text -> Attributes
+id_ = makeAttributes "id"
 
 -- | The @integrity@ attribute.
 --
 -- @since 2.9.8
-integrity_ :: Text -> Attribute
-integrity_ = makeAttribute "integrity"
+integrity_ :: Text -> Attributes
+integrity_ = makeAttributes "integrity"
 
 -- | The @ismap@ attribute.
-ismap_ :: Text -> Attribute
-ismap_ = makeAttribute "ismap"
+ismap_ :: Text -> Attributes
+ismap_ = makeAttributes "ismap"
 
 -- | The @item@ attribute.
-item_ :: Text -> Attribute
-item_ = makeAttribute "item"
+item_ :: Text -> Attributes
+item_ = makeAttributes "item"
 
 -- | The @itemprop@ attribute.
-itemprop_ :: Text -> Attribute
-itemprop_ = makeAttribute "itemprop"
+itemprop_ :: Text -> Attributes
+itemprop_ = makeAttributes "itemprop"
 
 -- | The @keytype@ attribute.
-keytype_ :: Text -> Attribute
-keytype_ = makeAttribute "keytype"
+keytype_ :: Text -> Attributes
+keytype_ = makeAttributes "keytype"
 
 -- | The @lang@ attribute.
-lang_ :: Text -> Attribute
-lang_ = makeAttribute "lang"
+lang_ :: Text -> Attributes
+lang_ = makeAttributes "lang"
 
 -- | The @list@ attribute.
-list_ :: Text -> Attribute
-list_ = makeAttribute "list"
+list_ :: Text -> Attributes
+list_ = makeAttributes "list"
 
 -- | The @loading@ attribute.
-loading_ :: Text -> Attribute
-loading_ = makeAttribute "loading"
+loading_ :: Text -> Attributes
+loading_ = makeAttributes "loading"
 
 -- | The @loop@ attribute.
-loop_ :: Text -> Attribute
-loop_ = makeAttribute "loop"
+loop_ :: Text -> Attributes
+loop_ = makeAttributes "loop"
 
 -- | The @low@ attribute.
-low_ :: Text -> Attribute
-low_ = makeAttribute "low"
+low_ :: Text -> Attributes
+low_ = makeAttributes "low"
 
 -- | The @manifest@ attribute.
-manifest_ :: Text -> Attribute
-manifest_ = makeAttribute "manifest"
+manifest_ :: Text -> Attributes
+manifest_ = makeAttributes "manifest"
 
 -- | The @max@ attribute.
-max_ :: Text -> Attribute
-max_ = makeAttribute "max"
+max_ :: Text -> Attributes
+max_ = makeAttributes "max"
 
 -- | The @maxlength@ attribute.
-maxlength_ :: Text -> Attribute
-maxlength_ = makeAttribute "maxlength"
+maxlength_ :: Text -> Attributes
+maxlength_ = makeAttributes "maxlength"
 
 -- | The @media@ attribute.
-media_ :: Text -> Attribute
-media_ = makeAttribute "media"
+media_ :: Text -> Attributes
+media_ = makeAttributes "media"
 
 -- | The @method@ attribute.
-method_ :: Text -> Attribute
-method_ = makeAttribute "method"
+method_ :: Text -> Attributes
+method_ = makeAttributes "method"
 
 -- | The @min@ attribute.
-min_ :: Text -> Attribute
-min_ = makeAttribute "min"
+min_ :: Text -> Attributes
+min_ = makeAttributes "min"
 
 -- | The @minlength@ attribute.
-minlength_ :: Text -> Attribute
-minlength_ = makeAttribute "minlength"
+minlength_ :: Text -> Attributes
+minlength_ = makeAttributes "minlength"
 
 -- | The @multiple@ attribute.
-multiple_ :: Text -> Attribute
-multiple_ = makeAttribute "multiple"
+multiple_ :: Text -> Attributes
+multiple_ = makeAttributes "multiple"
 
 -- | The @name@ attribute.
-name_ :: Text -> Attribute
-name_ = makeAttribute "name"
+name_ :: Text -> Attributes
+name_ = makeAttributes "name"
 
 -- | The @novalidate@ attribute.
-novalidate_ :: Text -> Attribute
-novalidate_ = makeAttribute "novalidate"
+novalidate_ :: Text -> Attributes
+novalidate_ = makeAttributes "novalidate"
 
 -- | The @onbeforeonload@ attribute.
-onbeforeonload_ :: Text -> Attribute
-onbeforeonload_ = makeAttribute "onbeforeonload"
+onbeforeonload_ :: Text -> Attributes
+onbeforeonload_ = makeAttributesRaw "onbeforeonload"
 
 -- | The @onbeforeprint@ attribute.
-onbeforeprint_ :: Text -> Attribute
-onbeforeprint_ = makeAttribute "onbeforeprint"
+onbeforeprint_ :: Text -> Attributes
+onbeforeprint_ = makeAttributesRaw "onbeforeprint"
 
 -- | The @onblur@ attribute.
-onblur_ :: Text -> Attribute
-onblur_ = makeAttribute "onblur"
+onblur_ :: Text -> Attributes
+onblur_ = makeAttributesRaw "onblur"
 
 -- | The @oncanplay@ attribute.
-oncanplay_ :: Text -> Attribute
-oncanplay_ = makeAttribute "oncanplay"
+oncanplay_ :: Text -> Attributes
+oncanplay_ = makeAttributesRaw "oncanplay"
 
 -- | The @oncanplaythrough@ attribute.
-oncanplaythrough_ :: Text -> Attribute
-oncanplaythrough_ = makeAttribute "oncanplaythrough"
+oncanplaythrough_ :: Text -> Attributes
+oncanplaythrough_ = makeAttributesRaw "oncanplaythrough"
 
 -- | The @onchange@ attribute.
-onchange_ :: Text -> Attribute
-onchange_ = makeAttribute "onchange"
+onchange_ :: Text -> Attributes
+onchange_ = makeAttributesRaw "onchange"
 
 -- | The @onclick@ attribute.
-onclick_ :: Text -> Attribute
-onclick_ = makeAttribute "onclick"
+onclick_ :: Text -> Attributes
+onclick_ = makeAttributesRaw "onclick"
 
 -- | The @oncontextmenu@ attribute.
-oncontextmenu_ :: Text -> Attribute
-oncontextmenu_ = makeAttribute "oncontextmenu"
+oncontextmenu_ :: Text -> Attributes
+oncontextmenu_ = makeAttributesRaw "oncontextmenu"
 
 -- | The @ondblclick@ attribute.
-ondblclick_ :: Text -> Attribute
-ondblclick_ = makeAttribute "ondblclick"
+ondblclick_ :: Text -> Attributes
+ondblclick_ = makeAttributesRaw "ondblclick"
 
 -- | The @ondrag@ attribute.
-ondrag_ :: Text -> Attribute
-ondrag_ = makeAttribute "ondrag"
+ondrag_ :: Text -> Attributes
+ondrag_ = makeAttributesRaw "ondrag"
 
 -- | The @ondragend@ attribute.
-ondragend_ :: Text -> Attribute
-ondragend_ = makeAttribute "ondragend"
+ondragend_ :: Text -> Attributes
+ondragend_ = makeAttributesRaw "ondragend"
 
 -- | The @ondragenter@ attribute.
-ondragenter_ :: Text -> Attribute
-ondragenter_ = makeAttribute "ondragenter"
+ondragenter_ :: Text -> Attributes
+ondragenter_ = makeAttributesRaw "ondragenter"
 
 -- | The @ondragleave@ attribute.
-ondragleave_ :: Text -> Attribute
-ondragleave_ = makeAttribute "ondragleave"
+ondragleave_ :: Text -> Attributes
+ondragleave_ = makeAttributesRaw "ondragleave"
 
 -- | The @ondragover@ attribute.
-ondragover_ :: Text -> Attribute
-ondragover_ = makeAttribute "ondragover"
+ondragover_ :: Text -> Attributes
+ondragover_ = makeAttributesRaw "ondragover"
 
 -- | The @ondragstart@ attribute.
-ondragstart_ :: Text -> Attribute
-ondragstart_ = makeAttribute "ondragstart"
+ondragstart_ :: Text -> Attributes
+ondragstart_ = makeAttributesRaw "ondragstart"
 
 -- | The @ondrop@ attribute.
-ondrop_ :: Text -> Attribute
-ondrop_ = makeAttribute "ondrop"
+ondrop_ :: Text -> Attributes
+ondrop_ = makeAttributesRaw "ondrop"
 
 -- | The @ondurationchange@ attribute.
-ondurationchange_ :: Text -> Attribute
-ondurationchange_ = makeAttribute "ondurationchange"
+ondurationchange_ :: Text -> Attributes
+ondurationchange_ = makeAttributesRaw "ondurationchange"
 
 -- | The @onemptied@ attribute.
-onemptied_ :: Text -> Attribute
-onemptied_ = makeAttribute "onemptied"
+onemptied_ :: Text -> Attributes
+onemptied_ = makeAttributesRaw "onemptied"
 
 -- | The @onended@ attribute.
-onended_ :: Text -> Attribute
-onended_ = makeAttribute "onended"
+onended_ :: Text -> Attributes
+onended_ = makeAttributesRaw "onended"
 
 -- | The @onerror@ attribute.
-onerror_ :: Text -> Attribute
-onerror_ = makeAttribute "onerror"
+onerror_ :: Text -> Attributes
+onerror_ = makeAttributesRaw "onerror"
 
 -- | The @onfocus@ attribute.
-onfocus_ :: Text -> Attribute
-onfocus_ = makeAttribute "onfocus"
+onfocus_ :: Text -> Attributes
+onfocus_ = makeAttributesRaw "onfocus"
 
 -- | The @onformchange@ attribute.
-onformchange_ :: Text -> Attribute
-onformchange_ = makeAttribute "onformchange"
+onformchange_ :: Text -> Attributes
+onformchange_ = makeAttributesRaw "onformchange"
 
 -- | The @onforminput@ attribute.
-onforminput_ :: Text -> Attribute
-onforminput_ = makeAttribute "onforminput"
+onforminput_ :: Text -> Attributes
+onforminput_ = makeAttributesRaw "onforminput"
 
 -- | The @onhaschange@ attribute.
-onhaschange_ :: Text -> Attribute
-onhaschange_ = makeAttribute "onhaschange"
+onhaschange_ :: Text -> Attributes
+onhaschange_ = makeAttributesRaw "onhaschange"
 
 -- | The @oninput@ attribute.
-oninput_ :: Text -> Attribute
-oninput_ = makeAttribute "oninput"
+oninput_ :: Text -> Attributes
+oninput_ = makeAttributesRaw "oninput"
 
 -- | The @oninvalid@ attribute.
-oninvalid_ :: Text -> Attribute
-oninvalid_ = makeAttribute "oninvalid"
+oninvalid_ :: Text -> Attributes
+oninvalid_ = makeAttributesRaw "oninvalid"
 
 -- | The @onkeydown@ attribute.
-onkeydown_ :: Text -> Attribute
-onkeydown_ = makeAttribute "onkeydown"
+onkeydown_ :: Text -> Attributes
+onkeydown_ = makeAttributesRaw "onkeydown"
 
 -- | The @onkeyup@ attribute.
-onkeyup_ :: Text -> Attribute
-onkeyup_ = makeAttribute "onkeyup"
+onkeyup_ :: Text -> Attributes
+onkeyup_ = makeAttributesRaw "onkeyup"
 
 -- | The @onload@ attribute.
-onload_ :: Text -> Attribute
-onload_ = makeAttribute "onload"
+onload_ :: Text -> Attributes
+onload_ = makeAttributesRaw "onload"
 
 -- | The @onloadeddata@ attribute.
-onloadeddata_ :: Text -> Attribute
-onloadeddata_ = makeAttribute "onloadeddata"
+onloadeddata_ :: Text -> Attributes
+onloadeddata_ = makeAttributesRaw "onloadeddata"
 
 -- | The @onloadedmetadata@ attribute.
-onloadedmetadata_ :: Text -> Attribute
-onloadedmetadata_ = makeAttribute "onloadedmetadata"
+onloadedmetadata_ :: Text -> Attributes
+onloadedmetadata_ = makeAttributesRaw "onloadedmetadata"
 
 -- | The @onloadstart@ attribute.
-onloadstart_ :: Text -> Attribute
-onloadstart_ = makeAttribute "onloadstart"
+onloadstart_ :: Text -> Attributes
+onloadstart_ = makeAttributesRaw "onloadstart"
 
 -- | The @onmessage@ attribute.
-onmessage_ :: Text -> Attribute
-onmessage_ = makeAttribute "onmessage"
+onmessage_ :: Text -> Attributes
+onmessage_ = makeAttributesRaw "onmessage"
 
 -- | The @onmousedown@ attribute.
-onmousedown_ :: Text -> Attribute
-onmousedown_ = makeAttribute "onmousedown"
+onmousedown_ :: Text -> Attributes
+onmousedown_ = makeAttributesRaw "onmousedown"
 
 -- | The @onmousemove@ attribute.
-onmousemove_ :: Text -> Attribute
-onmousemove_ = makeAttribute "onmousemove"
+onmousemove_ :: Text -> Attributes
+onmousemove_ = makeAttributesRaw "onmousemove"
 
 -- | The @onmouseout@ attribute.
-onmouseout_ :: Text -> Attribute
-onmouseout_ = makeAttribute "onmouseout"
+onmouseout_ :: Text -> Attributes
+onmouseout_ = makeAttributesRaw "onmouseout"
 
 -- | The @onmouseover@ attribute.
-onmouseover_ :: Text -> Attribute
-onmouseover_ = makeAttribute "onmouseover"
+onmouseover_ :: Text -> Attributes
+onmouseover_ = makeAttributesRaw "onmouseover"
 
 -- | The @onmouseup@ attribute.
-onmouseup_ :: Text -> Attribute
-onmouseup_ = makeAttribute "onmouseup"
+onmouseup_ :: Text -> Attributes
+onmouseup_ = makeAttributesRaw "onmouseup"
 
 -- | The @onmousewheel@ attribute.
-onmousewheel_ :: Text -> Attribute
-onmousewheel_ = makeAttribute "onmousewheel"
+onmousewheel_ :: Text -> Attributes
+onmousewheel_ = makeAttributesRaw "onmousewheel"
 
 -- | The @ononline@ attribute.
-ononline_ :: Text -> Attribute
-ononline_ = makeAttribute "ononline"
+ononline_ :: Text -> Attributes
+ononline_ = makeAttributesRaw "ononline"
 
 -- | The @onpagehide@ attribute.
-onpagehide_ :: Text -> Attribute
-onpagehide_ = makeAttribute "onpagehide"
+onpagehide_ :: Text -> Attributes
+onpagehide_ = makeAttributesRaw "onpagehide"
 
 -- | The @onpageshow@ attribute.
-onpageshow_ :: Text -> Attribute
-onpageshow_ = makeAttribute "onpageshow"
+onpageshow_ :: Text -> Attributes
+onpageshow_ = makeAttributesRaw "onpageshow"
 
 -- | The @onpause@ attribute.
-onpause_ :: Text -> Attribute
-onpause_ = makeAttribute "onpause"
+onpause_ :: Text -> Attributes
+onpause_ = makeAttributesRaw "onpause"
 
 -- | The @onplay@ attribute.
-onplay_ :: Text -> Attribute
-onplay_ = makeAttribute "onplay"
+onplay_ :: Text -> Attributes
+onplay_ = makeAttributesRaw "onplay"
 
 -- | The @onplaying@ attribute.
-onplaying_ :: Text -> Attribute
-onplaying_ = makeAttribute "onplaying"
+onplaying_ :: Text -> Attributes
+onplaying_ = makeAttributesRaw "onplaying"
 
 -- | The @onprogress@ attribute.
-onprogress_ :: Text -> Attribute
-onprogress_ = makeAttribute "onprogress"
+onprogress_ :: Text -> Attributes
+onprogress_ = makeAttributesRaw "onprogress"
 
 -- | The @onpropstate@ attribute.
-onpropstate_ :: Text -> Attribute
-onpropstate_ = makeAttribute "onpropstate"
+onpropstate_ :: Text -> Attributes
+onpropstate_ = makeAttributesRaw "onpropstate"
 
 -- | The @onratechange@ attribute.
-onratechange_ :: Text -> Attribute
-onratechange_ = makeAttribute "onratechange"
+onratechange_ :: Text -> Attributes
+onratechange_ = makeAttributesRaw "onratechange"
 
 -- | The @onreadystatechange@ attribute.
-onreadystatechange_ :: Text -> Attribute
-onreadystatechange_ = makeAttribute "onreadystatechange"
+onreadystatechange_ :: Text -> Attributes
+onreadystatechange_ = makeAttributesRaw "onreadystatechange"
 
 -- | The @onredo@ attribute.
-onredo_ :: Text -> Attribute
-onredo_ = makeAttribute "onredo"
+onredo_ :: Text -> Attributes
+onredo_ = makeAttributesRaw "onredo"
 
 -- | The @onresize@ attribute.
-onresize_ :: Text -> Attribute
-onresize_ = makeAttribute "onresize"
+onresize_ :: Text -> Attributes
+onresize_ = makeAttributesRaw "onresize"
 
 -- | The @onscroll@ attribute.
-onscroll_ :: Text -> Attribute
-onscroll_ = makeAttribute "onscroll"
+onscroll_ :: Text -> Attributes
+onscroll_ = makeAttributesRaw "onscroll"
 
 -- | The @onseeked@ attribute.
-onseeked_ :: Text -> Attribute
-onseeked_ = makeAttribute "onseeked"
+onseeked_ :: Text -> Attributes
+onseeked_ = makeAttributesRaw "onseeked"
 
 -- | The @onseeking@ attribute.
-onseeking_ :: Text -> Attribute
-onseeking_ = makeAttribute "onseeking"
+onseeking_ :: Text -> Attributes
+onseeking_ = makeAttributesRaw "onseeking"
 
 -- | The @onselect@ attribute.
-onselect_ :: Text -> Attribute
-onselect_ = makeAttribute "onselect"
+onselect_ :: Text -> Attributes
+onselect_ = makeAttributesRaw "onselect"
 
 -- | The @onstalled@ attribute.
-onstalled_ :: Text -> Attribute
-onstalled_ = makeAttribute "onstalled"
+onstalled_ :: Text -> Attributes
+onstalled_ = makeAttributesRaw "onstalled"
 
 -- | The @onstorage@ attribute.
-onstorage_ :: Text -> Attribute
-onstorage_ = makeAttribute "onstorage"
+onstorage_ :: Text -> Attributes
+onstorage_ = makeAttributesRaw "onstorage"
 
 -- | The @onsubmit@ attribute.
-onsubmit_ :: Text -> Attribute
-onsubmit_ = makeAttribute "onsubmit"
+onsubmit_ :: Text -> Attributes
+onsubmit_ = makeAttributesRaw "onsubmit"
 
 -- | The @onsuspend@ attribute.
-onsuspend_ :: Text -> Attribute
-onsuspend_ = makeAttribute "onsuspend"
+onsuspend_ :: Text -> Attributes
+onsuspend_ = makeAttributesRaw "onsuspend"
 
 -- | The @ontimeupdate@ attribute.
-ontimeupdate_ :: Text -> Attribute
-ontimeupdate_ = makeAttribute "ontimeupdate"
+ontimeupdate_ :: Text -> Attributes
+ontimeupdate_ = makeAttributesRaw "ontimeupdate"
 
 -- | The @onundo@ attribute.
-onundo_ :: Text -> Attribute
-onundo_ = makeAttribute "onundo"
+onundo_ :: Text -> Attributes
+onundo_ = makeAttributesRaw "onundo"
 
 -- | The @onunload@ attribute.
-onunload_ :: Text -> Attribute
-onunload_ = makeAttribute "onunload"
+onunload_ :: Text -> Attributes
+onunload_ = makeAttributesRaw "onunload"
 
 -- | The @onvolumechange@ attribute.
-onvolumechange_ :: Text -> Attribute
-onvolumechange_ = makeAttribute "onvolumechange"
+onvolumechange_ :: Text -> Attributes
+onvolumechange_ = makeAttributesRaw "onvolumechange"
 
 -- | The @onwaiting@ attribute.
-onwaiting_ :: Text -> Attribute
-onwaiting_ = makeAttribute "onwaiting"
+onwaiting_ :: Text -> Attributes
+onwaiting_ = makeAttributesRaw "onwaiting"
 
 -- | The @open@ attribute.
-open_ :: Text -> Attribute
-open_ = makeAttribute "open"
+open_ :: Text -> Attributes
+open_ = makeAttributes "open"
 
 -- | The @optimum@ attribute.
-optimum_ :: Text -> Attribute
-optimum_ = makeAttribute "optimum"
+optimum_ :: Text -> Attributes
+optimum_ = makeAttributes "optimum"
 
 -- | The @pattern@ attribute.
-pattern_ :: Text -> Attribute
-pattern_ = makeAttribute "pattern"
+pattern_ :: Text -> Attributes
+pattern_ = makeAttributes "pattern"
 
 -- | The @ping@ attribute.
-ping_ :: Text -> Attribute
-ping_ = makeAttribute "ping"
+ping_ :: Text -> Attributes
+ping_ = makeAttributes "ping"
 
 -- | The @placeholder@ attribute.
-placeholder_ :: Text -> Attribute
-placeholder_ = makeAttribute "placeholder"
+placeholder_ :: Text -> Attributes
+placeholder_ = makeAttributes "placeholder"
 
 -- | The @poster@ attribute.
-poster_ :: Text -> Attribute
-poster_ = makeAttribute "poster"
+poster_ :: Text -> Attributes
+poster_ = makeAttributes "poster"
 
 -- | The @preload@ attribute.
-preload_ :: Text -> Attribute
-preload_ = makeAttribute "preload"
+preload_ :: Text -> Attributes
+preload_ = makeAttributes "preload"
 
 -- | The @pubdate@ attribute.
-pubdate_ :: Text -> Attribute
-pubdate_ = makeAttribute "pubdate"
+pubdate_ :: Text -> Attributes
+pubdate_ = makeAttributes "pubdate"
 
 -- | The @radiogroup@ attribute.
-radiogroup_ :: Text -> Attribute
-radiogroup_ = makeAttribute "radiogroup"
+radiogroup_ :: Text -> Attributes
+radiogroup_ = makeAttributes "radiogroup"
 
 -- | The @readonly@ attribute.
-readonly_ :: Text -> Attribute
-readonly_ = makeAttribute "readonly"
+readonly_ :: Text -> Attributes
+readonly_ = makeAttributes "readonly"
 
 -- | The @rel@ attribute.
-rel_ :: Text -> Attribute
-rel_ = makeAttribute "rel"
+rel_ :: Text -> Attributes
+rel_ = makeAttributes "rel"
 
 -- | The @required@ attribute.
-required_ :: Text -> Attribute
-required_ = makeAttribute "required"
+required_ :: Text -> Attributes
+required_ = makeAttributes "required"
 
 -- | The @reversed@ attribute.
-reversed_ :: Text -> Attribute
-reversed_ = makeAttribute "reversed"
+reversed_ :: Text -> Attributes
+reversed_ = makeAttributes "reversed"
 
 -- | The @role@ attribute.
-role_ :: Text -> Attribute
-role_ = makeAttribute "role"
+role_ :: Text -> Attributes
+role_ = makeAttributes "role"
 
 -- | The @rows@ attribute.
-rows_ :: Text -> Attribute
-rows_ = makeAttribute "rows"
+rows_ :: Text -> Attributes
+rows_ = makeAttributes "rows"
 
 -- | The @rowspan@ attribute.
-rowspan_ :: Text -> Attribute
-rowspan_ = makeAttribute "rowspan"
+rowspan_ :: Text -> Attributes
+rowspan_ = makeAttributes "rowspan"
 
 -- | The @sandbox@ attribute.
-sandbox_ :: Text -> Attribute
-sandbox_ = makeAttribute "sandbox"
+sandbox_ :: Text -> Attributes
+sandbox_ = makeAttributes "sandbox"
 
 -- | The @scope@ attribute.
-scope_ :: Text -> Attribute
-scope_ = makeAttribute "scope"
+scope_ :: Text -> Attributes
+scope_ = makeAttributes "scope"
 
 -- | The @scoped@ attribute.
-scoped_ :: Text -> Attribute
-scoped_ = makeAttribute "scoped"
+scoped_ :: Text -> Attributes
+scoped_ = makeAttributes "scoped"
 
 -- | The @seamless@ attribute.
-seamless_ :: Text -> Attribute
-seamless_ = makeAttribute "seamless"
+seamless_ :: Text -> Attributes
+seamless_ = makeAttributes "seamless"
 
 -- | The @selected@ attribute.
-selected_ :: Text -> Attribute
-selected_ = makeAttribute "selected"
+selected_ :: Text -> Attributes
+selected_ = makeAttributes "selected"
 
 -- | The @shape@ attribute.
-shape_ :: Text -> Attribute
-shape_ = makeAttribute "shape"
+shape_ :: Text -> Attributes
+shape_ = makeAttributes "shape"
 
 -- | The @size@ attribute.
-size_ :: Text -> Attribute
-size_ = makeAttribute "size"
+size_ :: Text -> Attributes
+size_ = makeAttributes "size"
 
 -- | The @sizes@ attribute.
-sizes_ :: Text -> Attribute
-sizes_ = makeAttribute "sizes"
+sizes_ :: Text -> Attributes
+sizes_ = makeAttributes "sizes"
 
 -- | The @spellcheck@ attribute.
-spellcheck_ :: Text -> Attribute
-spellcheck_ = makeAttribute "spellcheck"
+spellcheck_ :: Text -> Attributes
+spellcheck_ = makeAttributes "spellcheck"
 
 -- | The @src@ attribute.
-src_ :: Text -> Attribute
-src_ = makeAttribute "src"
+src_ :: Text -> Attributes
+src_ = makeAttributes "src"
 
 -- | The @srcdoc@ attribute.
-srcdoc_ :: Text -> Attribute
-srcdoc_ = makeAttribute "srcdoc"
+srcdoc_ :: Text -> Attributes
+srcdoc_ = makeAttributes "srcdoc"
 
 -- | The @start@ attribute.
-start_ :: Text -> Attribute
-start_ = makeAttribute "start"
+start_ :: Text -> Attributes
+start_ = makeAttributes "start"
 
 -- | The @step@ attribute.
-step_ :: Text -> Attribute
-step_ = makeAttribute "step"
+step_ :: Text -> Attributes
+step_ = makeAttributes "step"
 
 -- | The @subject@ attribute.
-subject_ :: Text -> Attribute
-subject_ = makeAttribute "subject"
+subject_ :: Text -> Attributes
+subject_ = makeAttributes "subject"
 
 -- | The @tabindex@ attribute.
-tabindex_ :: Text -> Attribute
-tabindex_ = makeAttribute "tabindex"
+tabindex_ :: Text -> Attributes
+tabindex_ = makeAttributes "tabindex"
 
 -- | The @target@ attribute.
-target_ :: Text -> Attribute
-target_ = makeAttribute "target"
+target_ :: Text -> Attributes
+target_ = makeAttributes "target"
 
 -- | The @type@ attribute.
-type_ :: Text -> Attribute
-type_ = makeAttribute "type"
+type_ :: Text -> Attributes
+type_ = makeAttributes "type"
 
 -- | The @usemap@ attribute.
-usemap_ :: Text -> Attribute
-usemap_ = makeAttribute "usemap"
+usemap_ :: Text -> Attributes
+usemap_ = makeAttributes "usemap"
 
 -- | The @value@ attribute.
-value_ :: Text -> Attribute
-value_ = makeAttribute "value"
+value_ :: Text -> Attributes
+value_ = makeAttributes "value"
 
 -- | The @width@ attribute.
-width_ :: Text -> Attribute
-width_ = makeAttribute "width"
+width_ :: Text -> Attributes
+width_ = makeAttributes "width"
 
 -- | The @wrap@ attribute.
-wrap_ :: Text -> Attribute
-wrap_ = makeAttribute "wrap"
+wrap_ :: Text -> Attributes
+wrap_ = makeAttributes "wrap"
 
 -- | The @xmlns@ attribute.
-xmlns_ :: Text -> Attribute
-xmlns_ = makeAttribute "xmlns"
+xmlns_ :: Text -> Attributes
+xmlns_ = makeAttributes "xmlns"

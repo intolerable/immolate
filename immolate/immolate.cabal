@@ -1,5 +1,5 @@
-name:                lucid2
-version:             0.0.20230706
+name:                immolate
+version:             0.1.0.0
 synopsis:            Clear to write, read and edit DSL for HTML
 description:
   Clear to write, read and edit DSL for HTML.
@@ -8,17 +8,14 @@ description:
   .
   * Same combinator can be used for attributes and elements (e.g. 'style_')
   .
-  * For more, read <https://chrisdone.com/posts/lucid the blog post>
-  .
-  See the "Lucid" module for more documentation.
-  .
-  This package is the newer version of lucid.
-homepage:            https://github.com/chrisdone/lucid
+  See the "Immolate" module for more documentation.
+
+homepage:            https://github.com/intolerable/immolate
 license:             BSD3
 license-file:        LICENSE
-author:              Chris Done
-maintainer:          lucid2@chrisdone.com
-copyright:           2014-2022 Chris Done
+author:              Fraser Murray
+maintainer:          fraser.m.murray@gmail.com
+copyright:           2023 Fraser Murray
 category:            Web
 build-type:          Simple
 cabal-version:       >=1.10
@@ -28,9 +25,9 @@ library
   default-language:  Haskell2010
   hs-source-dirs:    src/
   ghc-options:       -Wall -O2
-  exposed-modules:   Lucid
-                     Lucid.Base
-                     Lucid.Html5
+  exposed-modules:   Immolate
+                     Immolate.Base
+                     Immolate.Html5
 
   -- These have been inlined from the blaze-builder package, so that
   -- all dependencies are GHC boot libraries.
@@ -48,7 +45,7 @@ library
 
 source-repository head
   type:     git
-  location: https://github.com/chrisdone/lucid.git
+  location: https://github.com/intolerable/immolate.git
 
 test-suite test
     default-language: Haskell2010
@@ -56,7 +53,7 @@ test-suite test
     main-is: Main.hs
     hs-source-dirs: test
     build-depends: base,
-                   lucid2,
+                   immolate,
                    HUnit,
                    hspec,
                    parsec,

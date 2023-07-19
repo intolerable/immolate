@@ -11,7 +11,7 @@
 
 -- | Base types and combinators.
 
-module Lucid.Base
+module Immolate.Base
   (-- * Rendering
    renderText
   ,renderBS
@@ -182,7 +182,7 @@ instance ToHtml L.ByteString where
 
 -- | Used to construct HTML terms.
 --
--- Simplest use: p_ = term "p" yields 'Lucid.Html5.p_'.
+-- Simplest use: p_ = term "p" yields 'Immolate.Html5.p_'.
 --
 -- Very overloaded for three cases:
 --
@@ -192,14 +192,14 @@ instance ToHtml L.ByteString where
 --   term accepts no attributes and just the children are used for the
 --   element.
 -- * Finally, this is also used for overloaded attributes, like
---   `Lucid.Html5.style_` or `Lucid.Html5.title_`. If a return type of @(Text,Text)@ is inferred
+--   `Immolate.Html5.style_` or `Immolate.Html5.title_`. If a return type of @(Text,Text)@ is inferred
 --   then an attribute will be made.
 --
 -- The instances look intimidating but actually the constraints make
 -- it very general so that type inference works well even in the
 -- presence of things like @OverloadedLists@ and such.
 class Term arg result | result -> arg where
-  -- | Used for constructing elements e.g. @term "p"@ yields 'Lucid.Html5.p_'.
+  -- | Used for constructing elements e.g. @term "p"@ yields 'Immolate.Html5.p_'.
   term :: Text   -- ^ Name of the element or attribute.
        -> arg    -- ^ Either an attribute list or children.
        -> result -- ^ Result: either an element or an attribute.
@@ -214,16 +214,16 @@ instance (Monad m) => Term (HtmlT m a) (HtmlT m a) where
   term name = makeElement name mempty
   {-# INLINE term #-}
 
--- | Some terms (like 'Lucid.Html5.style_', 'Lucid.Html5.title_') can be used for
+-- | Some terms (like 'Immolate.Html5.style_', 'Immolate.Html5.title_') can be used for
 -- attributes as well as elements.
 instance Term Text Attributes where
   term key value = makeAttributes key value
 
 -- | Same as the 'Term' class, but will not HTML escape its
--- children. Useful for elements like 'Lucid.Html5.style_' or
--- 'Lucid.Html5.script_'.
+-- children. Useful for elements like 'Immolate.Html5.style_' or
+-- 'Immolate.Html5.script_'.
 class TermRaw arg result | result -> arg where
-  -- | Used for constructing elements e.g. @termRaw "p"@ yields 'Lucid.Html5.p_'.
+  -- | Used for constructing elements e.g. @termRaw "p"@ yields 'Immolate.Html5.p_'.
   termRaw :: Text   -- ^ Name of the element or attribute.
        -> arg    -- ^ Either an attribute list or children.
        -> result -- ^ Result: either an element or an attribute.
@@ -237,7 +237,7 @@ instance (Monad m,ToHtml f, a ~ ()) => TermRaw [Attributes] (f -> HtmlT m a) whe
 instance (Monad m,a ~ ()) => TermRaw Text (HtmlT m a) where
   termRaw name = makeElement name mempty . toHtmlRaw
 
--- | Some termRaws (like 'Lucid.Html5.style_', 'Lucid.Html5.title_') can be used for
+-- | Some termRaws (like 'Immolate.Html5.style_', 'Immolate.Html5.title_') can be used for
 -- attributes as well as elements.
 instance TermRaw Text Attributes where
   termRaw key value = makeAttributesRaw key value

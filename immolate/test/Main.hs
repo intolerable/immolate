@@ -3,12 +3,12 @@
 {-# LANGUAGE RecursiveDo #-}
 {-# LANGUAGE ExtendedDefaultRules #-}
 
--- | Test suite for Lucid.
+-- | Test suite for Immolate.
 
 module Main where
 
-import Lucid
-import Lucid.Base
+import Immolate
+import Immolate.Base
 
 import Control.Applicative
 import Control.Monad.State.Strict

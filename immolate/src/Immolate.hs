@@ -1,16 +1,12 @@
 -- | Clear to write, read and edit DSL for writing HTML
 --
--- See "Lucid.Html5" for a complete list of Html5 combinators. That
+-- See "Immolate.Html5" for a complete list of Html5 combinators. That
 -- module is re-exported from this module for your convenience.
 --
--- See "Lucid.Base" for lower level functions like
+-- See "Immolate.Base" for lower level functions like
 -- `makeElement`, `makeAttributes`, 'termRaw', etc.
---
--- To convert html to the lucid DSL, use the (experimental) program
--- <https://github.com/dbaynard/lucid-from-html lucid-from-html>
--- which may eventually be integrated into lucid itself.
 
-module Lucid
+module Immolate
   (-- * Intro
    -- $intro
    renderText
@@ -32,15 +28,15 @@ module Lucid
   ,Term(..)
   ,ToHtml(..)
   -- * Re-exports
-  ,module Lucid.Html5)
+  ,module Immolate.Html5)
  where
 
-import Lucid.Base
-import Lucid.Html5
+import Immolate.Base
+import Immolate.Html5
 
 -- $intro
 --
--- HTML terms in Lucid are written with a postfix ‘@_@’ to indicate data
+-- HTML terms in Immolate are written with a postfix ‘@_@’ to indicate data
 -- rather than code. Some examples:
 --
 -- 'p_', 'class_', 'table_', 'style_'
@@ -53,7 +49,7 @@ import Lucid.Html5
 --
 -- @
 -- :set -XOverloadedStrings -XExtendedDefaultRules@
--- import Lucid
+-- import Immolate
 -- @
 --
 -- In a module: @{-\# LANGUAGE OverloadedStrings, ExtendedDefaultRules \#-}@
@@ -85,8 +81,8 @@ import Lucid.Html5
 --
 -- Attributes are set by providing an argument list:
 --
--- >>> p_ [class_ "brand"] "Lucid Inc" :: Html ()
--- <p class="brand">Lucid Inc</p>
+-- >>> p_ [class_ "brand"] "Immolate Inc" :: Html ()
+-- <p class="brand">Immolate Inc</p>
 --
 -- >>> p_ [data_ "zot" "foo",checked_] "Go!" :: Html ()
 -- <p data-zot="foo" checked>go</p>
@@ -96,7 +92,7 @@ import Lucid.Html5
 -- >>> style_ [style_ "inception"] "Go deeper." :: Html ()
 -- <style style="inception">Go deeper.</style>
 --
--- Here is a fuller example of Lucid:
+-- Here is a fuller example of Immolate:
 --
 -- @
 -- table_ [rows_ "2"]
