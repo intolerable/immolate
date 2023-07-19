@@ -25,7 +25,16 @@ extra-source-files:
 
 ghc-options: -Wall -Wextra
 
-default-extensions: []
+default-extensions:
+  - RankNTypes
+  - BangPatterns
+  - FlexibleInstances
+  - MultiParamTypeClasses
+  - GADTs
+  - FunctionalDependencies
+  - UndecidableInstances
+  - GeneralizedNewtypeDeriving
+  - OverloadedStrings
 
 dependencies:
   - base >= 4.8 && < 4.19

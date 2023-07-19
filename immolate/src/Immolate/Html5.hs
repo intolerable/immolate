@@ -1,7 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE NoMonomorphismRestriction #-}
-{-# OPTIONS -fno-warn-type-defaults #-}
-
 -- | Html5 terms.
 
 module Immolate.Html5 where

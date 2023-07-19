@@ -36,6 +36,16 @@ library
       Blaze.ByteString.Builder.Html.Word
   hs-source-dirs:
       src
+  default-extensions:
+      RankNTypes
+      BangPatterns
+      FlexibleInstances
+      MultiParamTypeClasses
+      GADTs
+      FunctionalDependencies
+      UndecidableInstances
+      GeneralizedNewtypeDeriving
+      OverloadedStrings
   ghc-options: -Wall -Wextra
   build-depends:
       base >=4.8 && <4.19
@@ -53,6 +63,16 @@ test-suite immolate-spec
       Paths_immolate
   hs-source-dirs:
       test
+  default-extensions:
+      RankNTypes
+      BangPatterns
+      FlexibleInstances
+      MultiParamTypeClasses
+      GADTs
+      FunctionalDependencies
+      UndecidableInstances
+      GeneralizedNewtypeDeriving
+      OverloadedStrings
   ghc-options: -Wall -Wextra
   build-depends:
       HUnit

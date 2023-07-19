@@ -1,14 +1,3 @@
-{-# LANGUAGE CPP, OverloadedStrings #-}
-{-# LANGUAGE BangPatterns, RankNTypes #-}
-{-# LANGUAGE FunctionalDependencies #-}
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE GADTs #-}
-{-# LANGUAGE DeriveDataTypeable, GeneralizedNewtypeDeriving #-}
-
--- Search for UndecidableInstances to see why this is needed
-{-# LANGUAGE UndecidableInstances #-}
-
 -- | Base types and combinators.
 
 module Immolate.Base
