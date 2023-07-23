@@ -1,0 +1,67 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.35.2.
+--
+-- see: https://github.com/sol/hpack
+
+name:           servant-immolate
+version:        0.1.0.0
+synopsis:       Serve HTML in Servant via Immolate
+author:         Fraser Murray
+maintainer:     fraser.m.murray@gmail.com
+copyright:      2023 Fraser Murray
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    CHANGELOG.md
+    README.md
+
+library
+  exposed-modules:
+      Servant.Immolate
+      Servant.Immolate.ContentType
+      Servant.Immolate.Links
+  other-modules:
+      Paths_servant_immolate
+  hs-source-dirs:
+      src
+  default-extensions:
+      OverloadedStrings
+  ghc-options: -Wall -Wextra
+  build-depends:
+      base
+    , http-api-data
+    , http-media
+    , immolate >=0.1.0.0 && <1
+    , servant
+    , text
+  default-language: GHC2021
+
+test-suite servant-immolate-spec
+  type: exitcode-stdio-1.0
+  main-is: Main.hs
+  other-modules:
+      Servant.ImmolateSpec
+      Paths_servant_immolate
+  hs-source-dirs:
+      spec
+  default-extensions:
+      OverloadedStrings
+      DataKinds
+      BlockArguments
+  ghc-options: -Wall -Wextra -threaded -rtsopts -with-rtsopts=-N
+  build-tool-depends:
+      hspec-discover:hspec-discover
+  build-depends:
+      base
+    , hspec
+    , hspec-wai
+    , http-api-data
+    , http-media
+    , immolate >=0.1.0.0 && <1
+    , servant
+    , servant-immolate
+    , servant-server
+    , text
+  default-language: GHC2021

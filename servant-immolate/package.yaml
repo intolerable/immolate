@@ -1,0 +1,50 @@
+name: servant-immolate
+version: 0.1.0.0
+synopsis: Serve HTML in Servant via Immolate
+
+license: BSD3
+license-file: LICENSE
+author: Fraser Murray
+maintainer: fraser.m.murray@gmail.com
+copyright: 2023 Fraser Murray
+
+language: GHC2021
+
+extra-source-files:
+  - CHANGELOG.md
+  - README.md
+
+ghc-options: -Wall -Wextra
+
+default-extensions:
+  - OverloadedStrings
+
+dependencies:
+  - base
+  - http-api-data
+  - http-media
+  - immolate >= 0.1.0.0 && < 1
+  - servant
+  - text
+
+library:
+  source-dirs: src
+
+tests:
+  servant-immolate-spec:
+    source-dirs: spec
+    main: Main.hs
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+    default-extensions:
+      - DataKinds
+      - BlockArguments
+    dependencies:
+      - servant-immolate
+      - hspec
+      - hspec-wai
+      - servant-server
+    build-tools:
+      - hspec-discover

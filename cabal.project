@@ -1,5 +1,6 @@
 packages:
   ./immolate
+  ./servant-immolate
 
 test-options:
   "--color"
