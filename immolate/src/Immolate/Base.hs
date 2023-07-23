@@ -152,6 +152,22 @@ instance ToHtml L.ByteString where
   toHtml    = write . Blaze.fromHtmlEscapedLazyText . LT.decodeUtf8
   toHtmlRaw = write . Blaze.lazyByteString
 
+instance ToHtml Integer where
+  toHtml = write . Blaze.integerDec 
+  toHtmlRaw = toHtml
+
+instance ToHtml Int where
+  toHtml = write . Blaze.intDec
+  toHtmlRaw = toHtml
+
+instance ToHtml Float where
+  toHtml = write . Blaze.floatDec
+  toHtmlRaw = toHtml
+
+instance ToHtml Double where
+  toHtml = write . Blaze.doubleDec
+  toHtmlRaw = toHtml
+
 -- | Used to construct HTML terms.
 --
 -- Simplest use: p_ = term "p" yields 'Immolate.Html5.p_'.
