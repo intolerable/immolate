@@ -6,3 +6,5 @@ test-options:
   "--diff"
   "--format=specdoc"
 test-show-details: streaming
+
+optimization: 2
