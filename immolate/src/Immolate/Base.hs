@@ -37,10 +37,7 @@ import           Control.Applicative
 import           Control.Monad
 import           Control.Monad.Fix (MonadFix(..))
 import           Control.Monad.IO.Class (MonadIO(..))
-import           Control.Monad.Reader (MonadReader(..))
-import           Control.Monad.State.Class (MonadState(..))
-import           Control.Monad.Trans (MonadTrans(..))
-import           Control.Monad.Trans.State.Strict (StateT(..), modify', mapStateT)
+import           Control.Monad.Trans.Class (MonadTrans(..))
 import qualified Data.ByteString as S
 import           Data.ByteString.Lazy (ByteString)
 import qualified Data.ByteString.Lazy as L
@@ -57,6 +54,7 @@ import qualified Data.Text.Lazy as LT
 import qualified Data.Text.Lazy.Encoding as LT
 import           Data.Tuple (swap)
 import           Prelude
+import           Immolate.Monad.Writer
 
 --------------------------------------------------------------------------------
 -- Types
@@ -79,27 +77,16 @@ type Html = HtmlT Identity
 
 -- | A monad transformer that generates HTML. Use the simpler 'Html'
 -- type if you don't want to transform over some other monad.
-newtype HtmlT m a = HtmlT { unHtmlT :: StateT Builder m a }
+newtype HtmlT m a = HtmlT { unHtmlT :: WriterT Builder m a }
   deriving (Monad, Functor, Applicative, MonadTrans, MonadFix)
-
--- | @since 2.9.7
-instance MonadReader r m => MonadReader r (HtmlT m) where
-  ask = lift ask
-  local f (HtmlT a) = HtmlT (local f a)
-
--- | @since 2.9.7
-instance MonadState s m => MonadState s (HtmlT m) where
-  get = lift get
-  put = lift . put
-  state = lift . state
 
 -- | Run the HtmlT transformer.
 runHtmlT :: Monad m => HtmlT m a -> m (Builder, a)
-runHtmlT = fmap swap . flip runStateT mempty . unHtmlT
+runHtmlT = fmap swap . runWriterT . unHtmlT
 
 -- | Switch the underlying monad.
 hoistHtmlT :: (Monad m, Monad n) => (forall a. m a -> n a) -> HtmlT m b -> HtmlT n b
-hoistHtmlT f (HtmlT xs) = HtmlT (mapStateT f xs)
+hoistHtmlT f (HtmlT xs) = HtmlT (hoistWriterT f xs)
 
 -- | @since 2.9.7
 instance (a ~ (),Monad m) => Semigroup (HtmlT m a) where
@@ -108,7 +95,7 @@ instance (a ~ (),Monad m) => Semigroup (HtmlT m a) where
 -- | Monoid is right-associative, a la the 'Builder' in it.
 instance (a ~ (),Monad m) => Monoid (HtmlT m a) where
   mempty  = pure mempty
-  mappend = liftA2 mappend
+  mappend = (<>)
 
 -- | If you want to use IO in your HTML generation.
 instance MonadIO m => MonadIO (HtmlT m) where
@@ -117,7 +104,7 @@ instance MonadIO m => MonadIO (HtmlT m) where
 -- | We pack it via string. Could possibly encode straight into a
 -- builder. That might be faster.
 instance (Monad m,a ~ ()) => IsString (HtmlT m a) where
-  fromString = toHtml
+  fromString = HtmlT . tell . Blaze.fromHtmlEscapedString
 
 -- | Just calls 'renderText'.
 instance (m ~ Identity) => Show (HtmlT m a) where
@@ -328,7 +315,7 @@ commuteHtmlT :: (Monad m, Monad n)
              -> m (HtmlT n a)  -- ^ Commuted monads. /Note:/ @n@ can be 'Identity'
 commuteHtmlT h = do
   (builder, a) <- runHtmlT h
-  return . HtmlT $ modify' (<> builder) >> return a
+  return . HtmlT $ tell builder >> return a
 
 -- | Evaluate the HTML to its return value. Analogous to @evalState@.
 --
@@ -355,6 +342,7 @@ makeAttributes :: Text -- ^ Attribute name.
                -> Text -- ^ Attribute value.
                -> Attributes
 makeAttributes x y = Attributes (pure (Attribute x (Blaze.fromHtmlEscapedText y)))
+{-# INLINE makeAttributes #-}
 
 -- | Make a set of unescaped attributes.
 makeAttributesRaw ::
@@ -427,7 +415,7 @@ s = Blaze.fromString
 
 -- | Write some HTML output.
 write :: Monad m => Builder -> HtmlT m ()
-write b = HtmlT (modify' (<> b))
+write b = HtmlT (tell b)
 {-# inline write #-}
 
 attributeList :: [Attributes] -> Seq Attribute

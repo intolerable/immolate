@@ -11,7 +11,7 @@ import Immolate
 import Immolate.Base
 
 import Control.Applicative
-import Control.Monad.State.Strict
+import qualified Control.Monad.Trans.State as Transformers
 
 import qualified Data.Text as T
 
@@ -159,8 +159,8 @@ testSelfClosing =
 testCommute :: Spec
 testCommute = do
   it "commutes" $ do
-    let stateAction :: HtmlT (Control.Monad.State.Strict.State [Integer]) ()
+    let stateAction :: HtmlT (Transformers.State [Integer]) ()
         stateAction = div_ [class_ "inside"] $ pure ()
-        (fragment, _s) = runState (commuteHtmlT stateAction) [0]
+        (fragment, _s) = Transformers.runState (commuteHtmlT stateAction) [0]
     renderText (div_ [class_ "outside"] fragment) `shouldBe`
      "<div class=\"outside\"><div class=\"inside\"></div></div>"

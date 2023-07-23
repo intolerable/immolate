@@ -35,12 +35,12 @@ default-extensions:
   - UndecidableInstances
   - GeneralizedNewtypeDeriving
   - OverloadedStrings
+  - StrictData
 
 dependencies:
   - base >= 4.8 && < 4.19
   - bytestring >= 0.10.12.0
   - containers >= 0.6.5.1
-  - mtl >= 2.2.2
   - text >= 1.2.4.1
   - transformers >= 0.5.6.2
 
@@ -50,11 +50,16 @@ library:
     - Blaze.ByteString.Builder.Char.Utf8
     - Blaze.ByteString.Builder.Html.Utf8
     - Blaze.ByteString.Builder.Html.Word
+    - Immolate.Monad.Writer
 
 tests:
   immolate-spec:
     source-dirs: test
     main: Main.hs
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
     dependencies:
       - immolate
       - hspec
