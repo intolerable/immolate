@@ -30,6 +30,8 @@ module Immolate.Base
   )
   where
 
+import           Data.Int
+import           Data.Word
 import           Data.ByteString.Builder (Builder)
 import qualified Data.ByteString.Builder as Blaze
 import qualified Blaze.ByteString.Builder.Html.Utf8 as Blaze
@@ -160,6 +162,42 @@ instance ToHtml Int where
   toHtml = write . Blaze.intDec
   toHtmlRaw = toHtml
 
+instance ToHtml Int64 where
+  toHtml = write . Blaze.int64Dec
+  toHtmlRaw = toHtml
+
+instance ToHtml Int32 where
+  toHtml = write . Blaze.int32Dec
+  toHtmlRaw = toHtml
+
+instance ToHtml Int16 where
+  toHtml = write . Blaze.int16Dec
+  toHtmlRaw = toHtml
+
+instance ToHtml Int8 where
+  toHtml = write . Blaze.int8Dec
+  toHtmlRaw = toHtml
+
+instance ToHtml Word where
+  toHtml = write . Blaze.wordDec
+  toHtmlRaw = toHtml
+
+instance ToHtml Word64 where
+  toHtml = write . Blaze.word64Dec
+  toHtmlRaw = toHtml
+
+instance ToHtml Word32 where
+  toHtml = write . Blaze.word32Dec
+  toHtmlRaw = toHtml
+
+instance ToHtml Word16 where
+  toHtml = write . Blaze.word16Dec
+  toHtmlRaw = toHtml
+
+instance ToHtml Word8 where
+  toHtml = write . Blaze.word8Dec
+  toHtmlRaw = toHtml
+
 instance ToHtml Float where
   toHtml = write . Blaze.floatDec
   toHtmlRaw = toHtml
@@ -167,6 +205,10 @@ instance ToHtml Float where
 instance ToHtml Double where
   toHtml = write . Blaze.doubleDec
   toHtmlRaw = toHtml
+
+instance ToHtml () where
+  toHtml = mempty
+  toHtmlRaw = mempty
 
 -- | Used to construct HTML terms.
 --
