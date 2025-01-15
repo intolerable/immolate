@@ -55,6 +55,7 @@ import qualified Data.Text.Encoding as T
 import qualified Data.Text.Lazy as LT
 import qualified Data.Text.Lazy.Encoding as LT
 import           Data.Tuple (swap)
+import           Data.Void
 import           Prelude
 import           Immolate.Monad.Writer
 
@@ -209,6 +210,10 @@ instance ToHtml Double where
 instance ToHtml () where
   toHtml = mempty
   toHtmlRaw = mempty
+
+instance ToHtml Void where
+  toHtml = absurd
+  toHtmlRaw = absurd
 
 -- | Used to construct HTML terms.
 --
