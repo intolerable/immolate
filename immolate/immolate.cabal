@@ -50,7 +50,7 @@ library
       StrictData
   ghc-options: -Wall -Wextra
   build-depends:
-      base >=4.8 && <4.19
+      base >=4.8 && <5
     , bytestring >=0.10.12.0
     , containers >=0.6.5.1
     , text >=1.2.4.1
@@ -78,7 +78,7 @@ test-suite immolate-spec
   ghc-options: -Wall -Wextra -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       HUnit
-    , base >=4.8 && <4.19
+    , base >=4.8 && <5
     , bytestring >=0.10.12.0
     , containers >=0.6.5.1
     , hspec
@@ -107,7 +107,7 @@ benchmark immolate-bench
       StrictData
   ghc-options: -Wall -Wextra -threaded -rtsopts -with-rtsopts=-N -O2
   build-depends:
-      base >=4.8 && <4.19
+      base >=4.8 && <5
     , bytestring >=0.10.12.0
     , containers >=0.6.5.1
     , criterion
